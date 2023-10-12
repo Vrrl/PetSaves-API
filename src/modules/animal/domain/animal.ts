@@ -1,48 +1,26 @@
 import { AggregateRoot } from '@src/core/domain/aggregate-root';
+import { AnimalName } from './animal-name';
+import { AnimalTypeEnum } from './animal-type-enum';
+import { AnimalStatusEnum } from './animal-status-enum';
+import { AnimalWeigth } from './animal-weigth';
+import { AnimalSizeEnum } from './animal-size-enum';
+import { AnimalAge } from './animal-age';
 
 export interface AnimalProps {
-  creatorId: string;
-  verified: boolean;
-  createdAt: Date;
-  editedAt?: Date;
-  deactivatedAt?: Date;
-  disabledAt?: Date;
+  rescuerId: string;
+  name: AnimalName;
+  type: AnimalTypeEnum;
+  status: AnimalStatusEnum;
+  lastWeigth: AnimalWeigth;
+  size: AnimalSizeEnum;
+  ageInMonths: AnimalAge;
+  registeredIn: Date;
+  shelteredIn: Date;
 }
 
 export class Animal extends AggregateRoot<AnimalProps> {
-  get verified(): boolean {
-    return this.props.verified;
-  }
-  get createdAt(): Date {
-    return this.props.createdAt;
-  }
-  get editedAt(): Date | undefined {
-    return this.props.editedAt;
-  }
-  get deactivatedAt(): Date | undefined {
-    return this.props.deactivatedAt;
-  }
-  get disabledAt(): Date | undefined {
-    return this.props.disabledAt;
-  }
-  get creatorId(): string {
-    return this.props.creatorId;
-  }
-
-  disable(): void {
-    this.props.disabledAt = new Date();
-  }
-
-  enable(): void {
-    this.props.disabledAt = undefined;
-  }
-
-  deactivate(): void {
-    this.props.deactivatedAt = new Date();
-  }
-
-  activate(): void {
-    this.props.deactivatedAt = undefined;
+  get name(): string {
+    return this.props.name.getValue();
   }
 
   public static createFromPrimitive(

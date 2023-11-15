@@ -13,7 +13,7 @@ const IAM: AWS['provider']['iam'] = {
           'dynamodb:UpdateItem',
           'dynamodb:DeleteItem',
         ],
-        Resource: 'arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMO_CHALLENGES_TABLE}',
+        Resource: 'arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMO_ANIMAL_TABLE}',
       },
     ],
   },

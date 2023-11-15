@@ -3,7 +3,7 @@ import * as CoreErrors from '@src/core/errors';
 import { z } from 'zod';
 
 const AnimalNameProps = z.object({
-  name: z.string().min(2).max(70),
+  name: z.string().min(2).max(70).optional(),
 });
 
 type AnimalNameProps = z.infer<typeof AnimalNameProps>;
@@ -13,7 +13,7 @@ export class AnimalName extends ValueObject<AnimalNameProps> {
     super(props);
   }
 
-  public getValue(): string {
+  get value(): string | undefined {
     return this.props.name;
   }
 

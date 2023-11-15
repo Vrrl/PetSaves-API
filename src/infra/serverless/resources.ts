@@ -19,7 +19,7 @@ const resources: AWS['resources'] = {
           },
         ],
         BillingMode: 'PAY_PER_REQUEST',
-        TableName: '${self:provider.environment.DYNAMO_CHALLENGES_TABLE}',
+        TableName: '${self:provider.environment.DYNAMO_ANIMAL_TABLE}',
       },
     },
     // CognitoUserPool: {

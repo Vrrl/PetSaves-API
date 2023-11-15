@@ -3,8 +3,7 @@ import * as CoreErrors from '@src/core/errors';
 import { z } from 'zod';
 
 const AnimalAgeProps = z.object({
-  ageInMonths: z.number().min(2).max(70),
-  ageInYears: z.number().min(2).max(70),
+  ageInMonths: z.number().min(2).max(70).optional(),
 });
 
 type AnimalAgeProps = z.infer<typeof AnimalAgeProps>;
@@ -14,11 +13,11 @@ export class AnimalAge extends ValueObject<AnimalAgeProps> {
     super(props);
   }
 
-  public getYears(): number {
-    return this.props.ageInYears;
+  public getYears(): number | undefined {
+    return this.props.ageInMonths ? this.props.ageInMonths / 12 : undefined;
   }
 
-  public getMonths(): number {
+  public getMonths(): number | undefined {
     return this.props.ageInMonths;
   }
 

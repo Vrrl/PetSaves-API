@@ -5,7 +5,7 @@ import resources from '@infra/serverless/resources';
 import * as environment from '@infra/serverless/provider-environment';
 
 const serverlessConfiguration: AWS = {
-  service: 'ArchMaster',
+  service: 'PatinhasLivresAPI',
   frameworkVersion: '3',
   plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
@@ -33,7 +33,7 @@ const serverlessConfiguration: AWS = {
     },
     esbuild: {
       bundle: true,
-      minify: true,
+      minify: false,
       sourcemap: false,
       exclude: ['aws-sdk'],
       target: 'node16',

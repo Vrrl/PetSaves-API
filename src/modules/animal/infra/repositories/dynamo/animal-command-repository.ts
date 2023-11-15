@@ -1,13 +1,12 @@
 import TYPES from '@src/core/types';
 import { inject, injectable } from 'inversify';
-import { Challenge } from '@src/modules/challenge/domain/challenge';
-import { IChallengeCommandRepository } from '../animal-command-repository';
+import { IAnimalCommandRepository } from '../animal-command-repository';
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
-import { ChallengeMap } from './mappers/challenge-map';
+import { Animal } from '@src/modules/animal/domain/animal';
 
 @injectable()
-export class ChallengeCommandRepository implements IChallengeCommandRepository {
+export class AnimalCommandRepository implements IAnimalCommandRepository {
   constructor(@inject(TYPES.DynamoDBClient) private dynamoClient: DynamoDBClient) {}
 
   hardDelete(id: string): Promise<void> {
@@ -17,22 +16,17 @@ export class ChallengeCommandRepository implements IChallengeCommandRepository {
     throw new Error('Method not implemented.');
   }
 
-  async save(challenge: Challenge): Promise<void> {
-    const tableName = process.env.DYNAMO_CHALLENGES_TABLE;
+  async save(animal: Animal): Promise<void> {
+    const tableName = process.env.DYNAMO_ANIMAL_TABLE;
 
-    const mappedChallenge = ChallengeMap.toPersistence(challenge);
     const putItemCommand = new PutItemCommand({
       TableName: tableName,
-      Item: marshall(mappedChallenge, {
+      Item: marshall(animal.toJson(), {
         convertClassInstanceToMap: true,
         removeUndefinedValues: true,
       }),
     });
 
     await this.dynamoClient.send(putItemCommand);
-  }
-
-  async update(challenge: Challenge): Promise<void> {
-    throw new Error('Method not implemented.');
   }
 }

@@ -4,15 +4,16 @@ import { Container } from 'inversify';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provider';
 
-import { CreateChallengeUseCase } from '@modules/challenge/use-cases/create-challenge/create-challenge';
-import { ChallengeCommandRepository } from '@src/infra/db/repositories/dynamo/challenge-command-repository';
-import { IChallengeCommandRepository } from '@src/infra/db/repositories/animal-command-repository';
 import { IAuthenticationService } from '@src/infra/authentication/services/authentication-service';
 import { CognitoService } from '@src/infra/authentication/services/cognito/cognito-service';
 import { SignUpUseCase } from '@src/modules/authentication/use-cases/sign-up/sign-up';
 import { SignUpConfirmUseCase } from '@src/modules/authentication/use-cases/sign-up-confirm/sign-up-confirm';
 import { SignUpResendVerificationCodeUseCase } from '@src/modules/authentication/use-cases/sign-up-resend-verification-code/sign-up-resend-verification-code';
 import { LogInUseCase } from '@src/modules/authentication/use-cases/log-in/log-in';
+import { IAnimalCommandRepository } from '@src/modules/animal/infra/repositories/animal-command-repository';
+import { AnimalCommandRepository } from '@src/modules/animal/infra/repositories/dynamo/animal-command-repository';
+import { ShelteredAnimalRegistrationUseCase } from '@src/modules/animal/use-cases/sheltered-animal-registration/sheltered-animal-registration';
+import { LostAnimalReportUseCase } from '@src/modules/animal/use-cases/lost-animal-report/lost-animal-report';
 
 const container = new Container();
 
@@ -27,7 +28,7 @@ container.bind<CognitoIdentityProvider>(TYPES.CognitoIdentityProvider).toConstan
 container.bind<IAuthenticationService>(TYPES.IAuthenticationService).to(CognitoService);
 
 // Repos
-container.bind<IChallengeCommandRepository>(TYPES.IChallengeCommandRepository).to(ChallengeCommandRepository);
+container.bind<IAnimalCommandRepository>(TYPES.IAnimalCommandRepository).to(AnimalCommandRepository);
 
 // UseCases
 container.bind<SignUpUseCase>(TYPES.SignUpUseCase).to(SignUpUseCase);
@@ -37,6 +38,10 @@ container
   .to(SignUpResendVerificationCodeUseCase);
 container.bind<LogInUseCase>(TYPES.LogInUseCase).to(LogInUseCase);
 
-container.bind<CreateChallengeUseCase>(TYPES.CreateChallengeUseCase).to(CreateChallengeUseCase);
+container
+  .bind<ShelteredAnimalRegistrationUseCase>(TYPES.ShelteredAnimalRegistrationUseCase)
+  .to(ShelteredAnimalRegistrationUseCase);
+
+container.bind<LostAnimalReportUseCase>(TYPES.LostAnimalReportUseCase).to(LostAnimalReportUseCase);
 
 export default container;

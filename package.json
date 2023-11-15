@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.427.0",
-    "@aws-sdk/client-dynamodb": "^3.414.0",
+    "@aws-sdk/client-dynamodb": "^3.415.0",
     "@aws-sdk/util-dynamodb": "^3.415.0",
     "@middy/core": "^3.4.0",
     "@middy/http-header-normalizer": "^4.6.2",
@@ -23,13 +23,14 @@
     "@middy/validator": "^4.6.2",
     "inversify": "^6.0.1",
     "inversify-binding-decorators": "^4.0.0",
+    "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13",
     "serverless-http": "^3.2.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.413.0",
+    "@aws-sdk/types": "^3.415.0",
     "@serverless/typescript": "^3.0.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/js-yaml": "^4.0.6",

@@ -6,22 +6,20 @@ import { AnimalTypeEnum } from '../../domain/animal-type-enum';
 import { AnimalSizeEnum } from '../../domain/animal-size-enum';
 import { IAnimalCommandRepository } from '../../infra/repositories/animal-command-repository';
 
-interface ShelteredAnimalRegistrationRequest {
+interface LostAnimalReportRequest {
   rescuerId: string;
   name: string;
   type: AnimalTypeEnum;
   size: AnimalSizeEnum;
   ageInMonths: number;
   lastWeigth?: number;
-  shelteredAt?: number;
+  shelteredIn?: number;
 }
 
-type ShelteredAnimalRegistrationResponse = void;
+type LostAnimalReportResponse = void;
 
 @injectable()
-export class ShelteredAnimalRegistrationUseCase
-  implements IUseCase<ShelteredAnimalRegistrationRequest, ShelteredAnimalRegistrationResponse>
-{
+export class LostAnimalReportUseCase implements IUseCase<LostAnimalReportRequest, LostAnimalReportResponse> {
   constructor(
     @inject(TYPES.IAnimalCommandRepository) private readonly animalCommandRepository: IAnimalCommandRepository,
   ) {}
@@ -33,18 +31,16 @@ export class ShelteredAnimalRegistrationUseCase
     size,
     ageInMonths,
     lastWeigth,
-    shelteredAt,
-  }: ShelteredAnimalRegistrationRequest): Promise<ShelteredAnimalRegistrationResponse> {
-    const newShelteredAnimal = Animal.createSheltered({
+  }: LostAnimalReportRequest): Promise<LostAnimalReportResponse> {
+    const newLostAnimal = Animal.createLost({
       rescuerId,
       name,
       type,
       size,
       ageInMonths,
       lastWeigth,
-      shelteredAt,
     });
 
-    await this.animalCommandRepository.save(newShelteredAnimal);
+    await this.animalCommandRepository.save(newLostAnimal);
   }
 }

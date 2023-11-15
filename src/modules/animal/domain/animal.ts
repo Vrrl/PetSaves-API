@@ -22,7 +22,7 @@ export interface AnimalProps {
 
 export class Animal extends AggregateRoot<AnimalProps> {
   claim(rescuerId: string) {
-    if (this.props.status === 'sheltered') throw new UseCaseError('Cannot claim sheltered animals');
+    if (this.props.status !== 'lost') throw new UseCaseError('Cannot claim animals not lost');
     if (!rescuerId) throw new UseCaseError('Cannot claim animal without rescuerId');
 
     this.props.status = 'sheltered';

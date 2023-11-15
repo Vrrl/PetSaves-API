@@ -7,6 +7,8 @@ const TYPES = {
   // Repos
   IAnimalCommandRepository: Symbol.for('IAnimalCommandRepository'),
   IAnimalQueryRepository: Symbol.for('IAnimalQueryRepository'),
+  IAdoptionCommandRepository: Symbol.for('IAdoptionCommandRepository'),
+  IAdoptionQueryRepository: Symbol.for('IAnimalQueryRepository'),
   // UseCases
   SignUpUseCase: Symbol.for('SignUpUseCase'),
   SignUpConfirmUseCase: Symbol.for('SignUpConfirmUseCase'),

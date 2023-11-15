@@ -2,7 +2,7 @@ import type { AWS } from '@serverless/typescript';
 
 const resources: AWS['resources'] = {
   Resources: {
-    ChallengesTable: {
+    AnimalsTable: {
       Type: 'AWS::DynamoDB::Table',
       DeletionPolicy: 'Retain',
       Properties: {
@@ -20,6 +20,52 @@ const resources: AWS['resources'] = {
         ],
         BillingMode: 'PAY_PER_REQUEST',
         TableName: '${self:provider.environment.DYNAMO_ANIMAL_TABLE}',
+      },
+    },
+    AdoptionsTable: {
+      Type: 'AWS::DynamoDB::Table',
+      DeletionPolicy: 'Retain',
+      Properties: {
+        AttributeDefinitions: [
+          {
+            AttributeName: 'animalId',
+            AttributeType: 'S',
+          },
+          {
+            AttributeName: 'requesterId',
+            AttributeType: 'S',
+          },
+        ],
+        KeySchema: [
+          {
+            AttributeName: 'animalId',
+            KeyType: 'HASH',
+          },
+          {
+            AttributeName: 'requesterId',
+            KeyType: 'RANGE',
+          },
+        ],
+        BillingMode: 'PAY_PER_REQUEST',
+        TableName: '${self:provider.environment.DYNAMO_ADOPTION_TABLE}',
+        GlobalSecondaryIndexes: [
+          {
+            IndexName: 'RequesterIndex',
+            KeySchema: [
+              {
+                AttributeName: 'requesterId',
+                KeyType: 'HASH',
+              },
+              {
+                AttributeName: 'animalId',
+                KeyType: 'RANGE',
+              },
+            ],
+            Projection: {
+              ProjectionType: 'ALL',
+            },
+          },
+        ],
       },
     },
     // CognitoUserPool: {

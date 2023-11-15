@@ -4,10 +4,12 @@ import { ShelteredAnimalRegistrationController } from './use-cases/sheltered-ani
 import { LostAnimalReportController } from './use-cases/lost-animal-report/lost-animal-report-controller';
 import { LostAnimalClaimController } from './use-cases/lost-animal-claim/lost-animal-claim-controller';
 import { AnimalListController } from './use-cases/animal-list/animal-list-controller';
+import { ShelteredAnimalRequestAdoptionController } from './use-cases/sheltered-animal-request-adoption/sheltered-animal-request-adoption-controller';
 
 const v1router = new Router('v1/animal');
 
 v1router.get('/', container.resolve(AnimalListController));
+v1router.get('/{id}/request-adoption', container.resolve(ShelteredAnimalRequestAdoptionController));
 v1router.post('/sheltered/registration', container.resolve(ShelteredAnimalRegistrationController));
 v1router.post('/lost/report', container.resolve(LostAnimalReportController));
 v1router.post('/lost/claim/{id}', container.resolve(LostAnimalClaimController));

@@ -13,7 +13,7 @@ import { AnimalSizeEnum } from '../../domain/animal-size-enum';
 @injectable()
 export class LostAnimalReportController extends Controller {
   constructor(
-    @inject(TYPES.ShelteredAnimalRegistrationUseCase)
+    @inject(TYPES.LostAnimalReportUseCase)
     private readonly lostAnimalReportUseCase: LostAnimalReportUseCase,
   ) {
     super();
@@ -37,7 +37,7 @@ export class LostAnimalReportController extends Controller {
     const { name, type, size, ageInMonths, lastWeigth } = httpRequest.body;
 
     const user = context.user as User;
-    debugger;
+
     await this.lostAnimalReportUseCase.execute({
       rescuerId: user.id,
       name,

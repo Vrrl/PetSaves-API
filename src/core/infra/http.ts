@@ -1,6 +1,7 @@
 export interface HttpRequest {
   body?: any;
   params?: any;
+  pathParams?: any;
   query?: any;
   headers?: any;
   files?: any;

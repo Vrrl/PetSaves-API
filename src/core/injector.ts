@@ -14,6 +14,8 @@ import { IAnimalCommandRepository } from '@src/modules/animal/infra/repositories
 import { AnimalCommandRepository } from '@src/modules/animal/infra/repositories/dynamo/animal-command-repository';
 import { ShelteredAnimalRegistrationUseCase } from '@src/modules/animal/use-cases/sheltered-animal-registration/sheltered-animal-registration';
 import { LostAnimalReportUseCase } from '@src/modules/animal/use-cases/lost-animal-report/lost-animal-report';
+import { LostAnimalClaimUseCase } from '@src/modules/animal/use-cases/lost-animal-claim/lost-animal-claim';
+import { AnimalQueryRepository } from '@src/modules/animal/infra/repositories/dynamo/animal-query-repository';
 
 const container = new Container();
 
@@ -29,6 +31,7 @@ container.bind<IAuthenticationService>(TYPES.IAuthenticationService).to(CognitoS
 
 // Repos
 container.bind<IAnimalCommandRepository>(TYPES.IAnimalCommandRepository).to(AnimalCommandRepository);
+container.bind<AnimalQueryRepository>(TYPES.IAnimalQueryRepository).to(AnimalQueryRepository);
 
 // UseCases
 container.bind<SignUpUseCase>(TYPES.SignUpUseCase).to(SignUpUseCase);
@@ -41,7 +44,7 @@ container.bind<LogInUseCase>(TYPES.LogInUseCase).to(LogInUseCase);
 container
   .bind<ShelteredAnimalRegistrationUseCase>(TYPES.ShelteredAnimalRegistrationUseCase)
   .to(ShelteredAnimalRegistrationUseCase);
-
 container.bind<LostAnimalReportUseCase>(TYPES.LostAnimalReportUseCase).to(LostAnimalReportUseCase);
+container.bind<LostAnimalClaimUseCase>(TYPES.LostAnimalClaimUseCase).to(LostAnimalClaimUseCase);
 
 export default container;

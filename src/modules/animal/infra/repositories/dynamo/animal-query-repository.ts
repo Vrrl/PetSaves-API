@@ -13,9 +13,9 @@ export class AnimalQueryRepository implements IAnimalQueryRepository {
   async getById(id: string): Promise<Animal | undefined> {
     const queryCommand = new QueryCommand({
       TableName: process.env.DYNAMO_ANIMAL_TABLE,
-      KeyConditionExpression: 'pk = :pk',
+      KeyConditionExpression: 'id = :id',
       ExpressionAttributeValues: marshall({
-        ':pk': id,
+        ':id': id,
       }),
       ScanIndexForward: false,
       Limit: 1,

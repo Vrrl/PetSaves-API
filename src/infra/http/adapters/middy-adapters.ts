@@ -13,7 +13,7 @@ export const middyRouterAdapter = (router: Router) => {
   const routes: Array<Route<APIGatewayProxyEventV2>> = router.routes.map(({ path, controller, method }) => {
     const middyHandler = middy<APIGatewayProxyEventV2>().handler(
       async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyStructuredResultV2> => {
-        const request: HttpRequest = { ...event };
+        const request: HttpRequest = { ...event, pathParams: event.pathParameters };
 
         const response = await controller.handle(request);
 

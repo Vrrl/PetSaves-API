@@ -15,6 +15,7 @@ const TYPES = {
   ShelteredAnimalRegistrationUseCase: Symbol.for('ShelteredAnimalRegistrationUseCase'),
   LostAnimalReportUseCase: Symbol.for('LostAnimalReportUseCase'),
   LostAnimalClaimUseCase: Symbol.for('LostAnimalClaimUseCase'),
+  AnimalListUseCase: Symbol.for('AnimalListUseCase'),
 };
 
 export default TYPES;

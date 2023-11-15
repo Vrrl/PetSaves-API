@@ -16,6 +16,7 @@ import { ShelteredAnimalRegistrationUseCase } from '@src/modules/animal/use-case
 import { LostAnimalReportUseCase } from '@src/modules/animal/use-cases/lost-animal-report/lost-animal-report';
 import { LostAnimalClaimUseCase } from '@src/modules/animal/use-cases/lost-animal-claim/lost-animal-claim';
 import { AnimalQueryRepository } from '@src/modules/animal/infra/repositories/dynamo/animal-query-repository';
+import { AnimalListUseCase } from '@src/modules/animal/use-cases/animal-list/animal-list';
 
 const container = new Container();
 
@@ -46,5 +47,6 @@ container
   .to(ShelteredAnimalRegistrationUseCase);
 container.bind<LostAnimalReportUseCase>(TYPES.LostAnimalReportUseCase).to(LostAnimalReportUseCase);
 container.bind<LostAnimalClaimUseCase>(TYPES.LostAnimalClaimUseCase).to(LostAnimalClaimUseCase);
+container.bind<AnimalListUseCase>(TYPES.AnimalListUseCase).to(AnimalListUseCase);
 
 export default container;

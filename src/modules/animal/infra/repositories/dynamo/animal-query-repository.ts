@@ -1,6 +1,6 @@
 import TYPES from '@src/core/types';
 import { inject, injectable } from 'inversify';
-import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { Animal } from '@src/modules/animal/domain/animal';
 import { IAnimalQueryRepository } from '../animal-query-repository';
@@ -9,6 +9,18 @@ import { AnimalMap } from './mappers/animal-map';
 @injectable()
 export class AnimalQueryRepository implements IAnimalQueryRepository {
   constructor(@inject(TYPES.DynamoDBClient) private dynamoClient: DynamoDBClient) {}
+
+  async list({ params }: { params: Record<string, string | undefined> }): Promise<Animal[]> {
+    const queryCommand = new ScanCommand({
+      TableName: process.env.DYNAMO_ANIMAL_TABLE,
+    });
+
+    const result = await this.dynamoClient.send(queryCommand);
+
+    if (!result.Items) return [];
+
+    return result.Items?.map(x => AnimalMap.toDomain(unmarshall(x)));
+  }
 
   async getById(id: string): Promise<Animal | undefined> {
     const queryCommand = new QueryCommand({

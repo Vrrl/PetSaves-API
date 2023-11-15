@@ -9,7 +9,7 @@ import { ShelteredAnimalRequestAdoptionController } from './use-cases/sheltered-
 const v1router = new Router('v1/animal');
 
 v1router.get('/', container.resolve(AnimalListController));
-v1router.get('/{id}/request-adoption', container.resolve(ShelteredAnimalRequestAdoptionController));
+v1router.post('/{id}/request-adoption', container.resolve(ShelteredAnimalRequestAdoptionController));
 v1router.post('/sheltered/registration', container.resolve(ShelteredAnimalRegistrationController));
 v1router.post('/lost/report', container.resolve(LostAnimalReportController));
 v1router.post('/lost/claim/{id}', container.resolve(LostAnimalClaimController));

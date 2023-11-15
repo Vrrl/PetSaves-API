@@ -71,6 +71,10 @@ export class Animal extends AggregateRoot<AnimalProps> {
     },
     id?: string,
   ): Animal {
+    if (!props.name) throw new UseCaseError('Cannot create sheltered animal without name');
+    if (!props.type) throw new UseCaseError('Cannot create sheltered animal without type');
+    if (!props.size) throw new UseCaseError('Cannot create sheltered animal without size');
+
     return Animal.createFromPrimitive(
       {
         ...props,

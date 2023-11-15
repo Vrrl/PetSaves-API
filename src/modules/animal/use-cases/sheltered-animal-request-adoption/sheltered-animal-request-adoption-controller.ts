@@ -7,14 +7,12 @@ import TYPES from '@src/core/types';
 import { AuthenticationLevel } from '@src/core/infra/authentication/authentication-level';
 import { User } from '@src/modules/authentication/domain/user';
 import { ShelteredAnimalRequestAdoptionUseCase } from './sheltered-animal-request-adoption';
-import { AnimalTypeEnum } from '../../domain/animal-type-enum';
-import { AnimalSizeEnum } from '../../domain/animal-size-enum';
 
 @injectable()
 export class ShelteredAnimalRequestAdoptionController extends Controller {
   constructor(
-    @inject(TYPES.ShelteredAnimalRegistrationUseCase)
-    private readonly shelteredAnimalRegistrationUseCase: ShelteredAnimalRequestAdoptionUseCase,
+    @inject(TYPES.ShelteredAnimalRequestAdoptionUseCase)
+    private readonly shelteredAnimalRequestAdoptionUseCase: ShelteredAnimalRequestAdoptionUseCase,
   ) {
     super();
   }
@@ -34,7 +32,7 @@ export class ShelteredAnimalRequestAdoptionController extends Controller {
 
     const user = context.user as User;
 
-    await this.shelteredAnimalRegistrationUseCase.execute({
+    await this.shelteredAnimalRequestAdoptionUseCase.execute({
       requesterId: user.id,
       id,
     });

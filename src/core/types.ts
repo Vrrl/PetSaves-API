@@ -8,7 +8,7 @@ const TYPES = {
   IAnimalCommandRepository: Symbol.for('IAnimalCommandRepository'),
   IAnimalQueryRepository: Symbol.for('IAnimalQueryRepository'),
   IAdoptionCommandRepository: Symbol.for('IAdoptionCommandRepository'),
-  IAdoptionQueryRepository: Symbol.for('IAnimalQueryRepository'),
+  IAdoptionQueryRepository: Symbol.for('IAdoptionQueryRepository'),
   // UseCases
   SignUpUseCase: Symbol.for('SignUpUseCase'),
   SignUpConfirmUseCase: Symbol.for('SignUpConfirmUseCase'),
@@ -18,6 +18,7 @@ const TYPES = {
   LostAnimalReportUseCase: Symbol.for('LostAnimalReportUseCase'),
   LostAnimalClaimUseCase: Symbol.for('LostAnimalClaimUseCase'),
   AnimalListUseCase: Symbol.for('AnimalListUseCase'),
+  ShelteredAnimalRequestAdoptionUseCase: Symbol.for('ShelteredAnimalRequestAdoptionUseCase'),
 };
 
 export default TYPES;

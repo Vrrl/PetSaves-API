@@ -6,7 +6,7 @@ import { IAdoptionCommandRepository } from '../adoption-command-repository';
 import { AdoptionRequest } from '@src/modules/animal/domain/adoption-request';
 
 @injectable()
-export class adoptionCommandRepository implements IAdoptionCommandRepository {
+export class AdoptionCommandRepository implements IAdoptionCommandRepository {
   constructor(@inject(TYPES.DynamoDBClient) private dynamoClient: DynamoDBClient) {}
 
   async saveRequest(adoptionRequest: AdoptionRequest): Promise<void> {

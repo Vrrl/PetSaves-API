@@ -14,7 +14,7 @@ export class AdoptionQueryRepository implements IAdoptionQueryRepository {
     const queryCommand = new QueryCommand({
       TableName: process.env.DYNAMO_ADOPTION_TABLE,
       IndexName: 'RequesterIndex',
-      KeyConditionExpression: 'requesterId = :rid',
+      KeyConditionExpression: 'requesterId = :requesterId',
       ExpressionAttributeValues: marshall(
         {
           ':requesterId': id,

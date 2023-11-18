@@ -1,6 +1,6 @@
 import TYPES from '@src/core/types';
 import { inject, injectable } from 'inversify';
-import { DynamoDBClient, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
+import { BatchGetItemCommand, DynamoDBClient, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { Animal } from '@src/modules/animal/domain/animal';
 import { IAnimalQueryRepository } from '../animal-query-repository';
@@ -20,6 +20,24 @@ export class AnimalQueryRepository implements IAnimalQueryRepository {
     if (!result.Items) return [];
 
     return result.Items?.map(x => AnimalMap.toDomain(unmarshall(x)));
+  }
+
+  async getBatch(ids: string[]): Promise<any[]> {
+    const batchGetItemCommand = new BatchGetItemCommand({
+      RequestItems: {
+        [process.env.DYNAMO_ANIMAL_TABLE!]: {
+          Keys: ids.map(x => {
+            return { id: { S: x } };
+          }),
+        },
+      },
+    });
+
+    const result = await this.dynamoClient.send(batchGetItemCommand);
+
+    if (!result.Responses || !result.Responses[process.env.DYNAMO_ANIMAL_TABLE!]) return [];
+
+    return result.Responses[process.env.DYNAMO_ANIMAL_TABLE!].map(x => AnimalMap.toDomain(unmarshall(x)));
   }
 
   async getById(id: string): Promise<Animal | undefined> {

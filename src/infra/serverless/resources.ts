@@ -68,6 +68,34 @@ const resources: AWS['resources'] = {
         ],
       },
     },
+    PublicationsTable: {
+      Type: 'AWS::DynamoDB::Table',
+      DeletionPolicy: 'Retain',
+      Properties: {
+        AttributeDefinitions: [
+          {
+            AttributeName: 'ownerId',
+            AttributeType: 'S',
+          },
+          {
+            AttributeName: 'id',
+            AttributeType: 'S',
+          },
+        ],
+        KeySchema: [
+          {
+            AttributeName: 'ownerId',
+            KeyType: 'HASH',
+          },
+          {
+            AttributeName: 'id',
+            KeyType: 'RANGE',
+          },
+        ],
+        BillingMode: 'PAY_PER_REQUEST',
+        TableName: '${self:provider.environment.DYNAMO_PUBLICATION_TABLE}',
+      },
+    },
     // CognitoUserPool: {
     //   Type: 'AWS::Cognito::UserPool',
     //   Properties: {

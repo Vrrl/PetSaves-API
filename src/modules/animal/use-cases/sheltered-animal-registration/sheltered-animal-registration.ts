@@ -5,6 +5,8 @@ import { Animal } from '../../domain/animal';
 import { AnimalTypeEnum } from '../../domain/animal-type-enum';
 import { AnimalSizeEnum } from '../../domain/animal-size-enum';
 import { IAnimalCommandRepository } from '../../infra/repositories/animal-command-repository';
+import { Publication } from '../../domain/publication';
+import { IPublicationCommandRepository } from '../../infra/repositories/publication-command-repository';
 
 interface ShelteredAnimalRegistrationRequest {
   rescuerId: string;
@@ -14,6 +16,8 @@ interface ShelteredAnimalRegistrationRequest {
   ageInMonths: number;
   lastWeigth?: number;
   shelteredAt?: number;
+  createPublication?: boolean;
+  publicationDescription?: string;
 }
 
 type ShelteredAnimalRegistrationResponse = void;
@@ -24,6 +28,8 @@ export class ShelteredAnimalRegistrationUseCase
 {
   constructor(
     @inject(TYPES.IAnimalCommandRepository) private readonly animalCommandRepository: IAnimalCommandRepository,
+    @inject(TYPES.IPublicationCommandRepository)
+    private readonly publicationCommandRepository: IPublicationCommandRepository,
   ) {}
 
   async execute({
@@ -34,6 +40,8 @@ export class ShelteredAnimalRegistrationUseCase
     ageInMonths,
     lastWeigth,
     shelteredAt,
+    createPublication,
+    publicationDescription,
   }: ShelteredAnimalRegistrationRequest): Promise<ShelteredAnimalRegistrationResponse> {
     const newShelteredAnimal = Animal.createSheltered({
       rescuerId,
@@ -46,5 +54,11 @@ export class ShelteredAnimalRegistrationUseCase
     });
 
     await this.animalCommandRepository.save(newShelteredAnimal);
+
+    if (createPublication) {
+      const newPub = Publication.newPublication(rescuerId, newShelteredAnimal.id, publicationDescription);
+
+      await this.publicationCommandRepository.save(newPub);
+    }
   }
 }

@@ -20,6 +20,9 @@ import { AnimalListUseCase } from '@src/modules/animal/use-cases/animal-list/ani
 import { ShelteredAnimalRequestAdoptionUseCase } from '@src/modules/animal/use-cases/sheltered-animal-request-adoption/sheltered-animal-request-adoption';
 import { AdoptionQueryRepository } from '@src/modules/animal/infra/repositories/dynamo/adoption-query-repository';
 import { AdoptionCommandRepository } from '@src/modules/animal/infra/repositories/dynamo/adoption-command-repository';
+import { PublicationCommandRepository } from '@src/modules/animal/infra/repositories/dynamo/publication-command-repository';
+import { PublicationQueryRepository } from '@src/modules/animal/infra/repositories/dynamo/publication-query-repository';
+import { AnimalFeedUseCase } from '@src/modules/animal/use-cases/animal-feed/animal-feed';
 
 const container = new Container();
 
@@ -38,6 +41,8 @@ container.bind<IAnimalCommandRepository>(TYPES.IAnimalCommandRepository).to(Anim
 container.bind<AnimalQueryRepository>(TYPES.IAnimalQueryRepository).to(AnimalQueryRepository);
 container.bind<AdoptionQueryRepository>(TYPES.IAdoptionQueryRepository).to(AdoptionQueryRepository);
 container.bind<AdoptionCommandRepository>(TYPES.IAdoptionCommandRepository).to(AdoptionCommandRepository);
+container.bind<PublicationCommandRepository>(TYPES.IPublicationCommandRepository).to(PublicationCommandRepository);
+container.bind<PublicationQueryRepository>(TYPES.IPublicationQueryRepository).to(PublicationQueryRepository);
 
 // UseCases
 container.bind<SignUpUseCase>(TYPES.SignUpUseCase).to(SignUpUseCase);
@@ -56,5 +61,6 @@ container.bind<AnimalListUseCase>(TYPES.AnimalListUseCase).to(AnimalListUseCase)
 container
   .bind<ShelteredAnimalRequestAdoptionUseCase>(TYPES.ShelteredAnimalRequestAdoptionUseCase)
   .to(ShelteredAnimalRequestAdoptionUseCase);
+container.bind<AnimalFeedUseCase>(TYPES.AnimalFeedUseCase).to(AnimalFeedUseCase);
 
 export default container;

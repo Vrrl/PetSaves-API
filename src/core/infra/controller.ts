@@ -35,9 +35,15 @@ export abstract class Controller {
       const context: ControllerContext = {};
 
       if (this.authenticationLevels?.length) {
-        const user = await this.authenticationService.getUserByToken(httpRequest.headers?.authorization);
-        if (!user) return httpStatus.Unauthorized();
-        context.user = user;
+        try {
+          const user = await this.authenticationService.getUserByToken(httpRequest.headers?.authorization);
+          if (!user) return httpStatus.Unauthorized();
+          context.user = user;
+        } catch (error: any) {
+          if (error.name === 'NotAuthorizedException') return httpStatus.Unauthorized('Access Token has expired');
+          console.log(error);
+          return httpStatus.serverError();
+        }
       }
 
       if (this.requestSchema) {

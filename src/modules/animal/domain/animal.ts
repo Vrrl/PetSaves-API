@@ -18,6 +18,7 @@ export interface AnimalProps {
   age: AnimalAge;
   registeredAt: number;
   shelteredAt?: number;
+  imageUrl: string;
 }
 
 export class Animal extends AggregateRoot<AnimalProps> {
@@ -40,6 +41,7 @@ export class Animal extends AggregateRoot<AnimalProps> {
       registeredAt: number;
       lastWeigth?: number;
       shelteredAt?: number;
+      imageUrl: string;
     },
     id?: string,
   ) {
@@ -54,6 +56,7 @@ export class Animal extends AggregateRoot<AnimalProps> {
         age: AnimalAge.create({ ageInMonths: props.ageInMonths }),
         registeredAt: props.registeredAt,
         shelteredAt: props.shelteredAt,
+        imageUrl: props.imageUrl,
       },
       id,
     );
@@ -68,12 +71,14 @@ export class Animal extends AggregateRoot<AnimalProps> {
       ageInMonths: number;
       lastWeigth?: number;
       shelteredAt?: number;
+      imageUrl: string;
     },
     id?: string,
   ): Animal {
     if (!props.name) throw new UseCaseError('Cannot create sheltered animal without name');
     if (!props.type) throw new UseCaseError('Cannot create sheltered animal without type');
     if (!props.size) throw new UseCaseError('Cannot create sheltered animal without size');
+    if (!props.imageUrl) throw new UseCaseError('Cannot create sheltered animal without image');
 
     return Animal.createFromPrimitive(
       {
@@ -94,6 +99,7 @@ export class Animal extends AggregateRoot<AnimalProps> {
       size: AnimalSizeEnum;
       ageInMonths?: number;
       lastWeigth?: number;
+      imageUrl: string;
     },
     id?: string,
   ): Animal {
@@ -115,10 +121,11 @@ export class Animal extends AggregateRoot<AnimalProps> {
       type: this.props.type,
       size: this.props.size,
       status: this.props.status,
-      ageInMonths: this.props.age.getMonths,
+      ageInMonths: this.props.age.months,
       registeredAt: this.props.registeredAt,
       lastWeigth: this.props.lastWeigth?.value,
       shelteredAt: this.props.shelteredAt,
+      imageUrl: this.props.imageUrl,
     };
   }
 }

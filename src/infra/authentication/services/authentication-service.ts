@@ -7,4 +7,5 @@ export interface IAuthenticationService {
   signUpConfirm(username: string, confirmationCode: string): Promise<void>;
   signUpResendVerificationCode(username: string): Promise<void>;
   logIn(username: string, password: string): Promise<IOAuthToken>;
+  listUsers(): Promise<User[]>;
 }

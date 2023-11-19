@@ -32,13 +32,23 @@ export class ShelteredAnimalRegistrationController extends Controller {
         shelteredAt: z.number().optional(),
         createPublication: z.boolean().optional(),
         publicationDescription: z.string().optional(),
+        imageUrl: z.string(),
       }),
     });
   }
 
   async perform(httpRequest: HttpRequest, context: ControllerContext): Promise<HttpResponse> {
-    const { name, type, size, ageInMonths, lastWeigth, shelteredAt, createPublication, publicationDescription } =
-      httpRequest.body;
+    const {
+      name,
+      type,
+      size,
+      ageInMonths,
+      lastWeigth,
+      shelteredAt,
+      createPublication,
+      publicationDescription,
+      imageUrl,
+    } = httpRequest.body;
 
     const user = context.user as User;
 
@@ -52,6 +62,7 @@ export class ShelteredAnimalRegistrationController extends Controller {
       shelteredAt,
       createPublication,
       publicationDescription,
+      imageUrl,
     });
 
     return created();

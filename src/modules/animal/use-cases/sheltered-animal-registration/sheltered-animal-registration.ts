@@ -18,6 +18,7 @@ interface ShelteredAnimalRegistrationRequest {
   shelteredAt?: number;
   createPublication?: boolean;
   publicationDescription?: string;
+  imageUrl: string;
 }
 
 type ShelteredAnimalRegistrationResponse = void;
@@ -42,6 +43,7 @@ export class ShelteredAnimalRegistrationUseCase
     shelteredAt,
     createPublication,
     publicationDescription,
+    imageUrl,
   }: ShelteredAnimalRegistrationRequest): Promise<ShelteredAnimalRegistrationResponse> {
     const newShelteredAnimal = Animal.createSheltered({
       rescuerId,
@@ -51,6 +53,7 @@ export class ShelteredAnimalRegistrationUseCase
       ageInMonths,
       lastWeigth,
       shelteredAt,
+      imageUrl,
     });
 
     await this.animalCommandRepository.save(newShelteredAnimal);

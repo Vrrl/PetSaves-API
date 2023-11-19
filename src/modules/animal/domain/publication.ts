@@ -14,6 +14,10 @@ export class Publication extends Entity<PublicationProps> {
     return this.props.animalId;
   }
 
+  get ownerId() {
+    return this.props.ownerId;
+  }
+
   get createdAt() {
     return this.props.createdAt;
   }

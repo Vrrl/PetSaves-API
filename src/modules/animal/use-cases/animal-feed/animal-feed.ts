@@ -4,6 +4,7 @@ import { IUseCase } from '@src/core/use-case';
 import { IAnimalQueryRepository } from '../../infra/repositories/animal-query-repository';
 import { IPublicationQueryRepository } from '../../infra/repositories/publication-query-repository';
 import _ from 'lodash';
+import { IAuthenticationService } from '@src/infra/authentication/services/authentication-service';
 
 interface AnimalFeedRequest {}
 
@@ -14,6 +15,7 @@ export class AnimalFeedUseCase implements IUseCase<AnimalFeedRequest, AnimalFeed
   constructor(
     @inject(TYPES.IAnimalQueryRepository) private readonly animalQueryRepository: IAnimalQueryRepository,
     @inject(TYPES.IPublicationQueryRepository) private readonly publicationQueryRepository: IPublicationQueryRepository,
+    @inject(TYPES.IAuthenticationService) private readonly authenticationService: IAuthenticationService,
   ) {}
 
   async execute(): Promise<AnimalFeedResponse> {
@@ -22,9 +24,14 @@ export class AnimalFeedUseCase implements IUseCase<AnimalFeedRequest, AnimalFeed
     if (!publications.length) return [];
 
     const animals = await this.animalQueryRepository.getBatch(publications.map(x => x.animalId));
-    debugger;
+    const users = await this.authenticationService.listUsers();
+
     return publications.map(x => {
-      return { ...x.toJson(), ...animals.find(y => y.id === x.animalId).toJson() };
+      return {
+        ...x.toJson(),
+        animal: animals.find(y => y.id === x.animalId)?.toJson(),
+        author: users.find(y => y.id === x.ownerId)?.toJson(),
+      };
     });
   }
 }

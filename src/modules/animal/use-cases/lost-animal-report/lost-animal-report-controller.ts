@@ -29,12 +29,13 @@ export class LostAnimalReportController extends Controller {
         size: AnimalSizeEnum,
         ageInMonths: z.number().optional(),
         lastWeigth: z.number().optional(),
+        imageUrl: z.number(),
       }),
     });
   }
 
   async perform(httpRequest: HttpRequest, context: ControllerContext): Promise<HttpResponse> {
-    const { name, type, size, ageInMonths, lastWeigth } = httpRequest.body;
+    const { name, type, size, ageInMonths, lastWeigth, imageUrl } = httpRequest.body;
 
     const user = context.user as User;
 
@@ -45,6 +46,7 @@ export class LostAnimalReportController extends Controller {
       size,
       ageInMonths,
       lastWeigth,
+      imageUrl,
     });
 
     return created();

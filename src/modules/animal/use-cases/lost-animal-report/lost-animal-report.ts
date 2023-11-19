@@ -14,6 +14,7 @@ interface LostAnimalReportRequest {
   ageInMonths: number;
   lastWeigth?: number;
   shelteredIn?: number;
+  imageUrl: string;
 }
 
 type LostAnimalReportResponse = void;
@@ -31,6 +32,7 @@ export class LostAnimalReportUseCase implements IUseCase<LostAnimalReportRequest
     size,
     ageInMonths,
     lastWeigth,
+    imageUrl,
   }: LostAnimalReportRequest): Promise<LostAnimalReportResponse> {
     const newLostAnimal = Animal.createLost({
       rescuerId,
@@ -39,6 +41,7 @@ export class LostAnimalReportUseCase implements IUseCase<LostAnimalReportRequest
       size,
       ageInMonths,
       lastWeigth,
+      imageUrl,
     });
 
     await this.animalCommandRepository.save(newLostAnimal);

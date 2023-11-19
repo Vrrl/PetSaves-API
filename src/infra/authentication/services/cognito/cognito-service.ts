@@ -7,8 +7,10 @@ import {
   GetUserCommandInput,
   GetUserResponse,
   InitiateAuthCommandInput,
+  ListUsersCommandInput,
   ResendConfirmationCodeCommandInput,
   SignUpCommandInput,
+  UserType,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { throwIfNotBoolean, throwIfUndefinedOrEmptyString } from '@src/core/infra/helpers/validation';
 import { User } from '@src/modules/authentication/domain/user';
@@ -116,6 +118,15 @@ export class CognitoService implements IAuthenticationService {
     }
   }
 
+  async listUsers(): Promise<User[]> {
+    const params = { UserPoolId: this.USER_POOL_ID } as ListUsersCommandInput;
+    const res = await this.cognitoIdentityProvider.listUsers(params);
+
+    if (!res.Users) return [];
+
+    return res.Users.map(x => this.mapFromUserType(x));
+  }
+
   private mapFromProvider(userResponse: GetUserResponse): User {
     return new User(
       {
@@ -123,8 +134,22 @@ export class CognitoService implements IAuthenticationService {
         emailVerified: throwIfNotBoolean(userResponse.UserAttributes?.find(x => x.Name === 'email_verified')?.Value),
         username: throwIfUndefinedOrEmptyString(userResponse.Username),
         externalId: throwIfUndefinedOrEmptyString(userResponse.UserAttributes?.find(x => x.Name === 'sub')?.Value),
+        imageUrl: userResponse.UserAttributes?.find(x => x.Name === 'custom:imageUrl')?.Value,
       },
       throwIfUndefinedOrEmptyString(userResponse.UserAttributes?.find(x => x.Name === 'custom:internalId')?.Value),
+    );
+  }
+
+  private mapFromUserType(user: UserType): User {
+    return new User(
+      {
+        email: throwIfUndefinedOrEmptyString(user.Attributes?.find(x => x.Name === 'email')?.Value),
+        emailVerified: throwIfNotBoolean(user.Attributes?.find(x => x.Name === 'email_verified')?.Value),
+        username: throwIfUndefinedOrEmptyString(user.Username),
+        externalId: throwIfUndefinedOrEmptyString(user.Attributes?.find(x => x.Name === 'sub')?.Value),
+        imageUrl: user.Attributes?.find(x => x.Name === 'custom:imageUrl')?.Value,
+      },
+      throwIfUndefinedOrEmptyString(user.Attributes?.find(x => x.Name === 'custom:internalId')?.Value),
     );
   }
 }

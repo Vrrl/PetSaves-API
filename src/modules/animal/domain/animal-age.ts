@@ -13,11 +13,11 @@ export class AnimalAge extends ValueObject<AnimalAgeProps> {
     super(props);
   }
 
-  public getYears(): number | undefined {
+  get years(): number | undefined {
     return this.props.ageInMonths ? this.props.ageInMonths / 12 : undefined;
   }
 
-  public getMonths(): number | undefined {
+  get months(): number | undefined {
     return this.props.ageInMonths;
   }
 

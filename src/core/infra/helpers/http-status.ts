@@ -33,10 +33,10 @@ export const badRequest = (error: object, headers: object = {}): HttpResponse =>
   };
 };
 
-export const Unauthorized = (headers: object = {}): HttpResponse => {
+export const Unauthorized = (message?: string, headers: object = {}): HttpResponse => {
   return {
     statusCode: 401,
-    body: { message: 'Unauthorized' },
+    body: { message: message || 'Unauthorized' },
     headers: {
       'Content-Type': 'application/json',
       ...headers,

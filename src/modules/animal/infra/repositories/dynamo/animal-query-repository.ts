@@ -22,7 +22,7 @@ export class AnimalQueryRepository implements IAnimalQueryRepository {
     return result.Items?.map(x => AnimalMap.toDomain(unmarshall(x)));
   }
 
-  async getBatch(ids: string[]): Promise<any[]> {
+  async getBatch(ids: string[]): Promise<Animal[]> {
     const batchGetItemCommand = new BatchGetItemCommand({
       RequestItems: {
         [process.env.DYNAMO_ANIMAL_TABLE!]: {

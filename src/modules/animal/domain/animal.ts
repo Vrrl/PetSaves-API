@@ -19,6 +19,7 @@ export interface AnimalProps {
   registeredAt: number;
   shelteredAt?: number;
   imageUrl: string;
+  lastLocation?: string;
 }
 
 export class Animal extends AggregateRoot<AnimalProps> {
@@ -42,6 +43,7 @@ export class Animal extends AggregateRoot<AnimalProps> {
       lastWeigth?: number;
       shelteredAt?: number;
       imageUrl: string;
+      lastLocation?: string;
     },
     id?: string,
   ) {
@@ -57,6 +59,7 @@ export class Animal extends AggregateRoot<AnimalProps> {
         registeredAt: props.registeredAt,
         shelteredAt: props.shelteredAt,
         imageUrl: props.imageUrl,
+        lastLocation: props.lastLocation,
       },
       id,
     );
@@ -94,15 +97,19 @@ export class Animal extends AggregateRoot<AnimalProps> {
   public static createLost(
     props: {
       rescuerId: string;
-      name?: string;
       type: AnimalTypeEnum;
       size: AnimalSizeEnum;
       ageInMonths?: number;
       lastWeigth?: number;
       imageUrl: string;
+      lastLocation: string;
     },
     id?: string,
   ): Animal {
+    if (!props.type) throw new UseCaseError('Cannot create lost animal without type');
+    if (!props.size) throw new UseCaseError('Cannot create lost animal without size');
+    if (!props.lastLocation) throw new UseCaseError('Cannot create lost animal without lastLocation');
+
     return Animal.createFromPrimitive(
       {
         ...props,
@@ -126,6 +133,7 @@ export class Animal extends AggregateRoot<AnimalProps> {
       lastWeigth: this.props.lastWeigth?.value,
       shelteredAt: this.props.shelteredAt,
       imageUrl: this.props.imageUrl,
+      lastLocation: this.props.lastLocation,
     };
   }
 }

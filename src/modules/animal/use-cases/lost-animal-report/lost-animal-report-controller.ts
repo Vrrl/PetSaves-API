@@ -24,29 +24,29 @@ export class LostAnimalReportController extends Controller {
   get requestSchema(): z.AnyZodObject {
     return z.object({
       body: z.object({
-        name: z.string().min(3).max(70).optional(),
         type: AnimalTypeEnum,
         size: AnimalSizeEnum,
         ageInMonths: z.number().optional(),
         lastWeigth: z.number().optional(),
         imageUrl: z.number(),
+        lastLocation: z.string(),
       }),
     });
   }
 
   async perform(httpRequest: HttpRequest, context: ControllerContext): Promise<HttpResponse> {
-    const { name, type, size, ageInMonths, lastWeigth, imageUrl } = httpRequest.body;
+    const { type, size, ageInMonths, lastWeigth, imageUrl, lastLocation } = httpRequest.body;
 
     const user = context.user as User;
 
     await this.lostAnimalReportUseCase.execute({
       rescuerId: user.id,
-      name,
       type,
       size,
       ageInMonths,
       lastWeigth,
       imageUrl,
+      lastLocation,
     });
 
     return created();

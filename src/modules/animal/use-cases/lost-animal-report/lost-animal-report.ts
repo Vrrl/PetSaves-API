@@ -8,13 +8,13 @@ import { IAnimalCommandRepository } from '../../infra/repositories/animal-comman
 
 interface LostAnimalReportRequest {
   rescuerId: string;
-  name: string;
   type: AnimalTypeEnum;
   size: AnimalSizeEnum;
   ageInMonths: number;
   lastWeigth?: number;
   shelteredIn?: number;
   imageUrl: string;
+  lastLocation: string;
 }
 
 type LostAnimalReportResponse = void;
@@ -27,21 +27,21 @@ export class LostAnimalReportUseCase implements IUseCase<LostAnimalReportRequest
 
   async execute({
     rescuerId,
-    name,
     type,
     size,
     ageInMonths,
     lastWeigth,
     imageUrl,
+    lastLocation,
   }: LostAnimalReportRequest): Promise<LostAnimalReportResponse> {
     const newLostAnimal = Animal.createLost({
       rescuerId,
-      name,
       type,
       size,
       ageInMonths,
       lastWeigth,
       imageUrl,
+      lastLocation,
     });
 
     await this.animalCommandRepository.save(newLostAnimal);

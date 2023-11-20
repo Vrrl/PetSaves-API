@@ -22,6 +22,7 @@ const TYPES = {
   LostAnimalReportUseCase: Symbol.for('LostAnimalReportUseCase'),
   LostAnimalClaimUseCase: Symbol.for('LostAnimalClaimUseCase'),
   AnimalListUseCase: Symbol.for('AnimalListUseCase'),
+  AdoptionRequestsListUseCase: Symbol.for('AdoptionRequestsListUseCase'),
   ShelteredAnimalRequestAdoptionUseCase: Symbol.for('ShelteredAnimalRequestAdoptionUseCase'),
   AnimalFeedUseCase: Symbol.for('AnimalFeedUseCase'),
 };

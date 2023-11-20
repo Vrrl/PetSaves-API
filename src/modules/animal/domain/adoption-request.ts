@@ -16,6 +16,10 @@ export class AdoptionRequest extends Entity<AdoptionRequestProps> {
     return this.props.animalId;
   }
 
+  get requesterId() {
+    return this.props.requesterId;
+  }
+
   static newRequest(requesterId: string, animalId: string) {
     return AdoptionRequest.createFromPrimitive({
       requesterId,

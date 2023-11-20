@@ -26,6 +26,7 @@ import { PublicationQueryRepository } from '@src/modules/animal/infra/repositori
 import { AnimalFeedUseCase } from '@src/modules/animal/use-cases/animal-feed/animal-feed';
 import { S3Service } from '@src/infra/storage/s3/s3-service';
 import { IStorageService } from '@src/infra/storage/storage-service';
+import { AdoptionRequestsListUseCase } from '@src/modules/animal/use-cases/adoptions-requests-list/adoption-requests-list';
 
 const container = new Container();
 
@@ -68,5 +69,6 @@ container
   .bind<ShelteredAnimalRequestAdoptionUseCase>(TYPES.ShelteredAnimalRequestAdoptionUseCase)
   .to(ShelteredAnimalRequestAdoptionUseCase);
 container.bind<AnimalFeedUseCase>(TYPES.AnimalFeedUseCase).to(AnimalFeedUseCase);
+container.bind<AdoptionRequestsListUseCase>(TYPES.AdoptionRequestsListUseCase).to(AdoptionRequestsListUseCase);
 
 export default container;

@@ -18,6 +18,7 @@ const functions: AWS['functions'] = Object.fromEntries(
           http: {
             method,
             path,
+            cors: true,
           },
         },
       ],

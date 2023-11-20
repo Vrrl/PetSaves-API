@@ -1,5 +1,10 @@
 import { HttpResponse } from '../http';
 
+const defaultHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true,
+};
+
 export const ok = (body?: any, headers: object = {}): HttpResponse => {
   return {
     statusCode: 200,
@@ -7,6 +12,7 @@ export const ok = (body?: any, headers: object = {}): HttpResponse => {
     headers: {
       'Content-Type': 'application/json',
       ...headers,
+      ...defaultHeaders,
     },
   };
 };
@@ -18,6 +24,7 @@ export const created = (body?: any, headers: object = {}): HttpResponse => {
     headers: {
       'Content-Type': 'application/json',
       ...headers,
+      ...defaultHeaders,
     },
   };
 };
@@ -29,6 +36,7 @@ export const badRequest = (error: object, headers: object = {}): HttpResponse =>
     headers: {
       'Content-Type': 'application/json',
       ...headers,
+      ...defaultHeaders,
     },
   };
 };
@@ -40,6 +48,7 @@ export const Unauthorized = (message?: string, headers: object = {}): HttpRespon
     headers: {
       'Content-Type': 'application/json',
       ...headers,
+      ...defaultHeaders,
     },
   };
 };
@@ -51,6 +60,7 @@ export const forbidden = (error: Error, headers: object = {}): HttpResponse => {
     headers: {
       'Content-Type': 'application/json',
       ...headers,
+      ...defaultHeaders,
     },
   };
 };
@@ -62,6 +72,7 @@ export const serverError = (headers: object = {}): HttpResponse => {
     headers: {
       'Content-Type': 'application/json',
       ...headers,
+      ...defaultHeaders,
     },
   };
 };

@@ -28,14 +28,17 @@ export class LostAnimalReportController extends Controller {
         size: AnimalSizeEnum,
         ageInMonths: z.number().optional(),
         lastWeigth: z.number().optional(),
-        imageUrl: z.number(),
+        imageUrl: z.string(),
         lastLocation: z.string(),
+        publicationDescription: z.string().optional(),
+        createPublication: z.boolean(),
       }),
     });
   }
 
   async perform(httpRequest: HttpRequest, context: ControllerContext): Promise<HttpResponse> {
-    const { type, size, ageInMonths, lastWeigth, imageUrl, lastLocation } = httpRequest.body;
+    const { type, size, ageInMonths, lastWeigth, imageUrl, lastLocation, publicationDescription, createPublication } =
+      httpRequest.body;
 
     const user = context.user as User;
 
@@ -47,6 +50,8 @@ export class LostAnimalReportController extends Controller {
       lastWeigth,
       imageUrl,
       lastLocation,
+      publicationDescription,
+      createPublication,
     });
 
     return created();

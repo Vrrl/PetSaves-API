@@ -9,7 +9,7 @@ interface LogInRequest {
   password: string;
 }
 
-type LogInResponse = IOAuthToken;
+type LogInResponse = { oauthToken: IOAuthToken; user: object };
 
 @injectable()
 export class LogInUseCase implements IUseCase<LogInRequest, LogInResponse> {
@@ -17,7 +17,8 @@ export class LogInUseCase implements IUseCase<LogInRequest, LogInResponse> {
 
   async execute({ username, password }: LogInRequest): Promise<LogInResponse> {
     const oauthToken = await this.authenticationService.logIn(username, password);
-
-    return oauthToken;
+    const user = await this.authenticationService.getUserByToken(`Bearer ${oauthToken.accessToken}`);
+    if (!user) throw new Error('user not found');
+    return { oauthToken, user: user.toJson() };
   }
 }

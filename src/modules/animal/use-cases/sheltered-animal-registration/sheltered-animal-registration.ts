@@ -7,7 +7,8 @@ import { AnimalSizeEnum } from '../../domain/animal-size-enum';
 import { IAnimalCommandRepository } from '../../infra/repositories/animal-command-repository';
 import { Publication } from '../../domain/publication';
 import { IPublicationCommandRepository } from '../../infra/repositories/publication-command-repository';
-
+import { IStorageService } from '@src/infra/storage/storage-service';
+import { v4 as uuid } from 'uuid';
 interface ShelteredAnimalRegistrationRequest {
   rescuerId: string;
   name: string;
@@ -18,7 +19,8 @@ interface ShelteredAnimalRegistrationRequest {
   shelteredAt?: number;
   createPublication?: boolean;
   publicationDescription?: string;
-  imageUrl: string;
+  image: string;
+  imageType: string;
 }
 
 type ShelteredAnimalRegistrationResponse = void;
@@ -29,6 +31,7 @@ export class ShelteredAnimalRegistrationUseCase
 {
   constructor(
     @inject(TYPES.IAnimalCommandRepository) private readonly animalCommandRepository: IAnimalCommandRepository,
+    @inject(TYPES.IStorageService) private readonly storageService: IStorageService,
     @inject(TYPES.IPublicationCommandRepository)
     private readonly publicationCommandRepository: IPublicationCommandRepository,
   ) {}
@@ -43,18 +46,26 @@ export class ShelteredAnimalRegistrationUseCase
     shelteredAt,
     createPublication,
     publicationDescription,
-    imageUrl,
+    image,
+    imageType,
   }: ShelteredAnimalRegistrationRequest): Promise<ShelteredAnimalRegistrationResponse> {
-    const newShelteredAnimal = Animal.createSheltered({
-      rescuerId,
-      name,
-      type,
-      size,
-      ageInMonths,
-      lastWeigth,
-      shelteredAt,
-      imageUrl,
-    });
+    const animalId = uuid();
+    const imageName = `animals/${animalId}.${imageType.split('/')[1]}`;
+    this.storageService.saveImage(image, imageName, imageType);
+
+    const newShelteredAnimal = Animal.createSheltered(
+      {
+        rescuerId,
+        name,
+        type,
+        size,
+        ageInMonths,
+        lastWeigth,
+        shelteredAt,
+        imageUrl: `https://patinhaslivresfotos.s3.amazonaws.com/${imageName}`,
+      },
+      animalId,
+    );
 
     await this.animalCommandRepository.save(newShelteredAnimal);
 

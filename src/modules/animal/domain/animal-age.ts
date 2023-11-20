@@ -3,7 +3,7 @@ import * as CoreErrors from '@src/core/errors';
 import { z } from 'zod';
 
 const AnimalAgeProps = z.object({
-  ageInMonths: z.number().min(2).max(70).optional(),
+  ageInMonths: z.number().min(0).max(1000).optional(),
 });
 
 type AnimalAgeProps = z.infer<typeof AnimalAgeProps>;

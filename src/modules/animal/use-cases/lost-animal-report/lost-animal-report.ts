@@ -7,7 +7,8 @@ import { AnimalSizeEnum } from '../../domain/animal-size-enum';
 import { IAnimalCommandRepository } from '../../infra/repositories/animal-command-repository';
 import { Publication } from '../../domain/publication';
 import { IPublicationCommandRepository } from '../../infra/repositories/publication-command-repository';
-
+import { v4 as uuid } from 'uuid';
+import { IStorageService } from '@src/infra/storage/storage-service';
 interface LostAnimalReportRequest {
   rescuerId: string;
   type: AnimalTypeEnum;
@@ -15,10 +16,11 @@ interface LostAnimalReportRequest {
   ageInMonths: number;
   lastWeigth?: number;
   shelteredIn?: number;
-  imageUrl: string;
   lastLocation: string;
   publicationDescription?: string;
   createPublication: boolean;
+  imageType: string;
+  image: string;
 }
 
 type LostAnimalReportResponse = void;
@@ -27,6 +29,7 @@ type LostAnimalReportResponse = void;
 export class LostAnimalReportUseCase implements IUseCase<LostAnimalReportRequest, LostAnimalReportResponse> {
   constructor(
     @inject(TYPES.IAnimalCommandRepository) private readonly animalCommandRepository: IAnimalCommandRepository,
+    @inject(TYPES.IStorageService) private readonly storageService: IStorageService,
     @inject(TYPES.IPublicationCommandRepository)
     private readonly publicationCommandRepository: IPublicationCommandRepository,
   ) {}
@@ -37,19 +40,24 @@ export class LostAnimalReportUseCase implements IUseCase<LostAnimalReportRequest
     size,
     ageInMonths,
     lastWeigth,
-    imageUrl,
     lastLocation,
     publicationDescription,
     createPublication,
+    imageType,
+    image,
   }: LostAnimalReportRequest): Promise<LostAnimalReportResponse> {
+    const animalId = uuid();
+    const imageName = `animals/${animalId}.${imageType.split('/')[1]}`;
+    this.storageService.saveImage(image, imageName, imageType);
+
     const newLostAnimal = Animal.createLost({
       rescuerId,
       type,
       size,
       ageInMonths,
       lastWeigth,
-      imageUrl,
       lastLocation,
+      imageUrl: `https://patinhaslivresfotos.s3.amazonaws.com/${imageName}`,
     });
 
     await this.animalCommandRepository.save(newLostAnimal);

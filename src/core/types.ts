@@ -1,9 +1,11 @@
 const TYPES = {
   // Resources
   DynamoDBClient: Symbol.for('DynamoDBClient'),
+  S3Client: Symbol.for('S3Client'),
   CognitoIdentityProvider: Symbol.for('CognitoIdentityProvider'),
   // Services
   IAuthenticationService: Symbol.for('IAuthenticationService'),
+  IStorageService: Symbol.for('IStorageService'),
   // Repos
   IAnimalCommandRepository: Symbol.for('IAnimalCommandRepository'),
   IAnimalQueryRepository: Symbol.for('IAnimalQueryRepository'),

@@ -32,7 +32,8 @@ export class ShelteredAnimalRegistrationController extends Controller {
         shelteredAt: z.number().optional(),
         createPublication: z.boolean().optional(),
         publicationDescription: z.string().optional(),
-        imageUrl: z.string(),
+        image: z.string(),
+        imageType: z.string(),
       }),
     });
   }
@@ -47,7 +48,8 @@ export class ShelteredAnimalRegistrationController extends Controller {
       shelteredAt,
       createPublication,
       publicationDescription,
-      imageUrl,
+      image,
+      imageType,
     } = httpRequest.body;
 
     const user = context.user as User;
@@ -62,7 +64,8 @@ export class ShelteredAnimalRegistrationController extends Controller {
       shelteredAt,
       createPublication,
       publicationDescription,
-      imageUrl,
+      image,
+      imageType,
     });
 
     return created();

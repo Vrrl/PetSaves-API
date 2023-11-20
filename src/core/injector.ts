@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import TYPES from './types';
 import { Container } from 'inversify';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { S3Client } from '@aws-sdk/client-s3';
 import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provider';
 
 import { IAuthenticationService } from '@src/infra/authentication/services/authentication-service';
@@ -23,18 +24,23 @@ import { AdoptionCommandRepository } from '@src/modules/animal/infra/repositorie
 import { PublicationCommandRepository } from '@src/modules/animal/infra/repositories/dynamo/publication-command-repository';
 import { PublicationQueryRepository } from '@src/modules/animal/infra/repositories/dynamo/publication-query-repository';
 import { AnimalFeedUseCase } from '@src/modules/animal/use-cases/animal-feed/animal-feed';
+import { S3Service } from '@src/infra/storage/s3/s3-service';
+import { IStorageService } from '@src/infra/storage/storage-service';
 
 const container = new Container();
 
 const dynamoDb = new DynamoDBClient({ region: process.env.REGION });
+const s3Client = new S3Client({ region: process.env.REGION });
 const cognitoIdentityProvider = new CognitoIdentityProvider({ region: process.env.REGION });
 
 // Resources
+container.bind<S3Client>(TYPES.S3Client).toConstantValue(s3Client);
 container.bind<DynamoDBClient>(TYPES.DynamoDBClient).toConstantValue(dynamoDb);
 container.bind<CognitoIdentityProvider>(TYPES.CognitoIdentityProvider).toConstantValue(cognitoIdentityProvider);
 
 // Services
 container.bind<IAuthenticationService>(TYPES.IAuthenticationService).to(CognitoService);
+container.bind<IStorageService>(TYPES.IStorageService).to(S3Service);
 
 // Repos
 container.bind<IAnimalCommandRepository>(TYPES.IAnimalCommandRepository).to(AnimalCommandRepository);

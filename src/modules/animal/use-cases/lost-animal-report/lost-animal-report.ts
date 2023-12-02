@@ -48,7 +48,7 @@ export class LostAnimalReportUseCase implements IUseCase<LostAnimalReportRequest
   }: LostAnimalReportRequest): Promise<LostAnimalReportResponse> {
     const animalId = uuid();
     const imageName = `animals/${animalId}.${imageType.split('/')[1]}`;
-    this.storageService.saveImage(image, imageName, imageType);
+    await this.storageService.saveImage(image, imageName, imageType);
 
     const newLostAnimal = Animal.createLost({
       rescuerId,

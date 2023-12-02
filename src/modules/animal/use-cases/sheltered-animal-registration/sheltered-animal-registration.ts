@@ -51,7 +51,7 @@ export class ShelteredAnimalRegistrationUseCase
   }: ShelteredAnimalRegistrationRequest): Promise<ShelteredAnimalRegistrationResponse> {
     const animalId = uuid();
     const imageName = `animals/${animalId}.${imageType.split('/')[1]}`;
-    this.storageService.saveImage(image, imageName, imageType);
+    await this.storageService.saveImage(image, imageName, imageType);
 
     const newShelteredAnimal = Animal.createSheltered(
       {
